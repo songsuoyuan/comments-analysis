@@ -5,5 +5,9 @@
 import sys 
 reload(sys) 
 sys.setdefaultencoding('utf-8')
-# for dumping 
+# dumping and loading data
 import pickle
+
+from_file = open('mutual_matrix.pkl','rb')
+(nouns_dict, adjcs_dict, mutual_matrix) = pickle.load(from_file)
+

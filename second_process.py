@@ -20,7 +20,7 @@ import math
 # plot functions
 import matplotlib.pyplot as plt
 
-from_file = open('pair_dict.txt','rb')
+from_file = open('pair_dict.pkl','rb')
 pair_dict = pickle.load(from_file)
 sorted_pair_dict = sorted(pair_dict.items(), key=(lambda x: x[1]), 
                           reverse=True)
@@ -103,24 +103,26 @@ for i in range(nouns_len):
             if v > prune_threshold:
                 mutual_matrix[i][j] = v
 
-# to_file = open('mutual_matrix.txt','wb')
-# pickle.dump((nouns_dict, adjcs_dict, mutual_matrix), to_file)
+to_file = open('mutual_matrix.pkl','wb')
+pickle.dump((nouns_dict, adjcs_dict, mutual_matrix), to_file)
 
-import numpy as np
-log_mutual_matrix = ([[0 for j in range(nouns_len)] 
-                     for i in range(adjcs_len)])
-for i in range(nouns_len):
-    for j in range(adjcs_len):
-        if mutual_matrix[i][j] > 0:
-            log_mutual_matrix[j][i] = np.log10(mutual_matrix[i][j])
-m = np.array(log_mutual_matrix)
-import pylab
-pylab.figure(figsize=(12,6))
-pylab.pcolor(m, cmap='spectral')
-pylab.colorbar()
-pylab.xlim([0, 172])
-pylab.title('Thermodynamic Plot')
-pylab.xlabel('Nouns')
-pylab.ylabel('Adjectives')
-pylab.savefig('thermodynamic plot.pdf', bbox_inches='tight')
-pylab.show()
+def log_mutual_matrix_plot(to_file_name):
+    import numpy as np
+    log_mutual_matrix = ([[0 for j in range(nouns_len)] 
+                         for i in range(adjcs_len)])
+    for i in range(nouns_len):
+        for j in range(adjcs_len):
+            if mutual_matrix[i][j] > 0:
+                log_mutual_matrix[j][i] = (np.log10(
+                                           mutual_matrix[i][j]))
+    m = np.array(log_mutual_matrix)
+    import pylab
+    pylab.figure(figsize=(12,6))
+    pylab.pcolor(m, cmap='spectral')
+    pylab.colorbar()
+    pylab.xlim([0, 172])
+    pylab.title('Thermodynamic Plot')
+    pylab.xlabel('Nouns')
+    pylab.ylabel('Adjectives')
+    pylab.savefig(to_file_name, bbox_inches='tight')
+    pylab.show()

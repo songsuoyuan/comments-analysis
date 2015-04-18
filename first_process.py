@@ -51,5 +51,5 @@ for i in range(141546):
                 else:
                     pair_dict[pair] = 1. / len(nouns) / len(adjcs)
 
-to_file = open('pair_dict.txt','wb')
+to_file = open('pair_dict.pkl','wb')
 pickle.dump(pair_dict, to_file)
