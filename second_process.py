@@ -85,8 +85,30 @@ def freq_item_plot(to_file_name):
 
 prune_threshold = 15.94
 prune_pair_dict = [it for it in sorted_pair_dict if it[1] > 15.94]
-nouns = set([it[0][0] for it in prune_pair_dict])
-adjcs = set([it[0][1] for it in prune_pair_dict])
+# remove duplicates
+nouns = list(set([it[0][0] for it in prune_pair_dict]))
+adjcs = list(set([it[0][1] for it in prune_pair_dict]))
+nouns_count = []
+adjcs_count = []
+# convert prune_pair_dict to dict
+prune_pair_dict = dict(prune_pair_dict)
+for n in nouns:
+    count = 0
+    for a in adjcs:
+        if prune_pair_dict.has_key((n, a)):
+            count += prune_pair_dict[(n, a)]
+    nouns_count.append(count)
+for a in adjcs:
+    count = 0
+    for n in nouns:
+        if prune_pair_dict.has_key((n, a)):
+            count += prune_pair_dict[(n, a)]
+    adjcs_count.append(count)
+
+nouns = [x for (y, x) in sorted(zip(nouns_count, nouns), 
+                                reverse=True)]
+adjcs = [x for (y, x) in sorted(zip(adjcs_count, adjcs),
+                                reverse=True)]
 
 # len(nouns) = 172, len(adjcs) = 80
 nouns_len = len(nouns)

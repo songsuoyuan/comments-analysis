@@ -39,7 +39,7 @@ def distance(line, w1, w2):
     dist = 100
     punctuation = [u'\u3002',u'\uff1f',u'\uff01',u'\uff0c',
          u'\u3001',u'\uff1b',u'\uff1a',u'\uff08',u'\uff09',
-         u'\uff5e','.','?','!',',',';',':','(',')','~']
+         u'\uff5e','.','?','!',',',';',':','(',')','~',' ']
     w1_location = []
     w2_location = []
     for each in re.finditer(w1, line):
@@ -68,13 +68,10 @@ def distance(line, w1, w2):
 # 141546
 for i in range(500):
     line = f.readline().decode('utf-8')[:-1]
-    for each in re.finditer(nouns_dict[1], line):
+    for each in re.finditer(nouns_dict[2], line):
         adjcs = []
         words = posseg.cut(line)
         for w in words:
             if w.flag[0] == 'a':
                 adjcs.append(w.word)
-
-        for adjc in adjcs:
-            print i, nouns_dict[1], adjc, distance(line, nouns_dict[1], adjc)
-
+        
