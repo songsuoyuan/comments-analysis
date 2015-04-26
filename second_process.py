@@ -110,6 +110,11 @@ nouns = [x for (y, x) in sorted(zip(nouns_count, nouns),
 adjcs = [x for (y, x) in sorted(zip(adjcs_count, adjcs),
                                 reverse=True)]
 
+for n in nouns:
+    k = (n, u'满意')
+    if pair_dict.has_key(k):
+        print n, pair_dict[k]
+
 # len(nouns) = 172, len(adjcs) = 80
 nouns_len = len(nouns)
 nouns_dict = dict(zip(range(nouns_len), list(nouns)))
@@ -118,6 +123,7 @@ adjcs_dict = dict(zip(range(adjcs_len), list(adjcs)))
 
 mutual_matrix = ([[0 for j in range(adjcs_len)] 
                  for i in range(nouns_len)])
+
 for i in range(nouns_len):
     for j in range(adjcs_len):
         if pair_dict.has_key((nouns_dict[i], adjcs_dict[j])):

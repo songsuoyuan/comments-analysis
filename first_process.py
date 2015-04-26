@@ -35,7 +35,7 @@ for i in range(141546):
     lseg = re.split((u'[\s\u3002\uff1f\uff01\uff0c\u3001\uff1b'
                      u'\uff1a\uff08\uff09\uff5e.?!,;:()~]'), line)
     for seg in lseg:
-        words = posseg.cut(seg)
+        words = posseg.cut(seg, HMM=False)
         nouns = []
         adjcs = []
         for w in words:

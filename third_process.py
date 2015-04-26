@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
+# [Finished in 9719.5s]
 # utf-8 setting
 import sys 
 reload(sys) 
@@ -19,13 +21,13 @@ import jieba.posseg as posseg
 from_file = open('mutual_matrix.pkl','rb')
 (nouns_dict, adjcs_dict, mutual_matrix) = pickle.load(from_file)
 
-# nouns_dict: (1: u'外观')
-# adjcs_dict: (1: u'方便')
+# nouns_dict: (0: u'手机')
+# adjcs_dict: (0: u'不错')
 # create inverse dict
 inv_nouns_dict = dict(zip(nouns_dict.values(), nouns_dict.keys()))
 inv_adjcs_dict = dict(zip(adjcs_dict.values(), adjcs_dict.keys()))
-# inv_nouns_dict[u'外观'] = 1
-# inv_adjcs_dict[u'方便'] = 1
+# inv_nouns_dict[u'东西'] = 1
+# inv_adjcs_dict[u'好'] = 1
 
 # left adjcs:
 left_adjcs = {}
@@ -63,15 +65,29 @@ def distance(line, w1, w2):
                         pun_count += 1
                 if 5 * pun_count + 1.5 * (p1[0] - p2[1]) < dist:
                     dist = 5 * pun_count + 1.5 * (p1[0] - p2[1])
-    return dist
+    return dist 
 
 # 141546
-for i in range(500):
+for i in range(141546):
     line = f.readline().decode('utf-8')[:-1]
-    for each in re.finditer(nouns_dict[2], line):
-        adjcs = []
-        words = posseg.cut(line)
-        for w in words:
-            if w.flag[0] == 'a':
-                adjcs.append(w.word)
-        
+    nouns = []
+    adjcs = []
+    words = posseg.cut(line)
+    for w in words:
+        if w.flag[0] == 'n':
+            nouns.append(w.word)
+        if w.flag[0] == 'a':
+            adjcs.append(w.word)
+    for n in nouns:
+        for a in adjcs:
+            if inv_nouns_dict.has_key(n) and inv_adjcs_dict.has_key(a):
+                n_indx = inv_nouns_dict[n]
+                a_indx = inv_adjcs_dict[a]
+                d = distance(line, n, a)
+                m = mutual_matrix[n_indx][a_indx]
+                # print i, n, a, distance(line, n, a), mutual_matrix[n_indx][a_indx]
+
+
+    
+
+
